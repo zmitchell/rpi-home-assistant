@@ -27,11 +27,11 @@ fi
 ## For hourly (not parameterized) builds (crontab)
 ## Do nothing: we're trying to build & push the same version again
 ## #####################################################################
-if [ "$HA_LATEST" = true ] && [ "$HA_VERSION" = "$_HA_VERSION" ]; then
-   log "Docker image with Home Assistant $HA_VERSION has already been built & pushed"
-   log ">>--------------------->>"
-   exit 0
-fi
+# if [ "$HA_LATEST" = true ] && [ "$HA_VERSION" = "$_HA_VERSION" ]; then
+#    log "Docker image with Home Assistant $HA_VERSION has already been built & pushed"
+#    log ">>--------------------->>"
+#    exit 0
+# fi
 
 ## #####################################################################
 ## Generate the Dockerfile
