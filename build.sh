@@ -55,14 +55,13 @@ RUN apt-get update && \
 
 # Make a non-root user for building python-openzwave
 RUN useradd -s /bin/bash zwave
-RUN mkdir /home/pi/python-openzwave
-RUN chown -R zwave /home/pi/python-openzwave
+RUN mkdir python-openzwave
+RUN chown -R zwave python-openzwave
 USER zwave
 
 # Build python-openzwave
-RUN cd /home/pi
-RUN git clone https:github.com/OpenZWave/python-openzwave.git
 RUN cd python-openzwave
+RUN git clone https:github.com/OpenZWave/python-openzwave.git .
 RUN git checkout python3
 RUN PYTHON_EXEC=$(which python3) make build
 USER root
