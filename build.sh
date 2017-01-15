@@ -58,7 +58,7 @@ RUN useradd -s /bin/bash zwave
 RUN mkdir python-openzwave
 
 # Build python-openzwave
-RUN git clone https:github.com/OpenZWave/python-openzwave.git
+RUN git clone https://github.com/OpenZWave/python-openzwave.git
 RUN chown -R zwave python-openzwave
 USER zwave
 cd python-openzwave
