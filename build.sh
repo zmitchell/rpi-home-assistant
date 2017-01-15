@@ -61,9 +61,9 @@ RUN mkdir python-openzwave && \
 WORKDIR python-openzwave
 USER zwave
 RUN git checkout python3
-RUN PYTHON_EXEC=$(which python3) make build
+RUN PYTHON_EXEC=/usr/bin/python3 make build
 USER root
-RUN PYTHON_EXEC=$(which python3) make install
+RUN PYTHON_EXEC=/usr/bin/python3 make install
 # $ git clone https://github.com/OpenZWave/python-openzwave.git
 # $ cd python-openzwave
 # $ git checkout python3
