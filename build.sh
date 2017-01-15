@@ -56,12 +56,12 @@ RUN apt-get update && \
 # Make a non-root user for building python-openzwave
 RUN useradd -s /bin/bash zwave
 RUN mkdir python-openzwave
-RUN chown -R zwave python-openzwave
-USER zwave
 
 # Build python-openzwave
-RUN cd python-openzwave
-RUN git clone https:github.com/OpenZWave/python-openzwave.git .
+RUN git clone https:github.com/OpenZWave/python-openzwave.git
+RUN chown -R zwave python-openzwave
+USER zwave
+cd python-openzwave
 RUN git checkout python3
 RUN PYTHON_EXEC=$(which python3) make build
 USER root
@@ -88,7 +88,7 @@ _EOF_
 ## Build the Docker image, tag and push to https://hub.docker.com/
 ## #####################################################################
 log "Building zmitchell/rpi-home-assistant:$HA_VERSION"
-docker build --no-cache=true -t zmitchell/rpi-home-assistant:$HA_VERSION .
+docker build -t zmitchell/rpi-home-assistant:$HA_VERSION .
 
 #log "Pushing zmitchell/rpi-home-assistant:$HA_VERSION"
 #docker push zmitchell/rpi-home-assistant:$HA_VERSION
