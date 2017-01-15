@@ -44,20 +44,45 @@ MAINTAINER Zach Mitchell <zmitchell@fastmail.com>
 ENV ARCH=arm
 ENV CROSS_COMPILE=/usr/bin/
 
-# Install some packages
+# Install dependencies
 RUN apt-get update && \
-    apt-get install --no-install-recommends build-essential net-tools nmap python3-dev python3-pip ssh && \
+    apt-get install --no-install-recommends build-essential net-tools \
+    nmap python3-dev python3-pip ssh \
+    cython3 libudev-dev python3-sphinx python3-setuptools git && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    pip3 install --upgrade cython==0.24.1
+
+# Make a non-root user for building python-openzwave
+RUN useradd -s /bin/bash zwave
+RUN mkdir /home/pi/python-openzwave
+RUN chown -R zwave /home/pi/python-openzwave
+USER zwave
+
+# Build python-openzwave
+RUN cd /home/pi
+RUN git clone https:github.com/OpenZWave/python-openzwave.git
+RUN cd python-openzwave
+RUN git checkout python3
+RUN PYTHON_EXEC=$(which python3) make build
+USER root
+RUN PYTHON_EXEC=$(which python3) make install
+# $ git clone https://github.com/OpenZWave/python-openzwave.git
+# $ cd python-openzwave
+# $ git checkout python3
+# $ PYTHON_EXEC=$(which python3) make build
+# $ sudo PYTHON_EXEC=$(which python3) make install
+
 
 # Mouting point for the user's configuration
 VOLUME /config
 
-# Start Home Assistant
-CMD [ "python3", "-m", "homeassistant", "--config", "/config" ]
-
 # Install Home Assistant
 RUN pip3 install homeassistant==$HA_VERSION
+
+# Start Home Assistant
+# CMD [ "python3", "-m", "homeassistant", "--config", "/config" ]
+CMD ["sh"]
 _EOF_
 
 ## #####################################################################
