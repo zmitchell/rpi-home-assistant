@@ -91,14 +91,14 @@ _EOF_
 log "Building zmitchell/rpi-home-assistant:$HA_VERSION"
 docker build -t zmitchell/rpi-home-assistant:$HA_VERSION .
 
-log "Pushing zmitchell/rpi-home-assistant:$HA_VERSION"
-docker push zmitchell/rpi-home-assistant:$HA_VERSION
+#log "Pushing zmitchell/rpi-home-assistant:$HA_VERSION"
+#docker push zmitchell/rpi-home-assistant:$HA_VERSION
 
 if [ "$HA_LATEST" = true ]; then
    log "Tagging zmitchell/rpi-home-assistant:$HA_VERSION with latest"
    docker tag zmitchell/rpi-home-assistant:$HA_VERSION zmitchell/rpi-home-assistant:latest
-   log "Pushing zmitchell/rpi-home-assistant:latest"
-   docker push zmitchell/rpi-home-assistant:latest
+   #log "Pushing zmitchell/rpi-home-assistant:latest"
+   #docker push zmitchell/rpi-home-assistant:latest
    echo $HA_VERSION > /home/pi/rpi-home-assistant/log/docker-build.version
 fi
 
