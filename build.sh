@@ -89,7 +89,7 @@ _EOF_
 ## Build the Docker image, tag and push to https://hub.docker.com/
 ## #####################################################################
 log "Building zmitchell/rpi-home-assistant:$HA_VERSION"
-docker build -t --no-cache zmitchell/rpi-home-assistant:$HA_VERSION .
+docker build --no-cache=true -t zmitchell/rpi-home-assistant:$HA_VERSION .
 
 #log "Pushing zmitchell/rpi-home-assistant:$HA_VERSION"
 #docker push zmitchell/rpi-home-assistant:$HA_VERSION
