@@ -81,7 +81,9 @@ VOLUME /config
 # RUN pip3 install -r requirements_all.txt
 # WORKDIR /
 # RUN rm -rf home-assistant
-RUN pip3 install -r /config/ha-requirements.txt
+WORKDIR /config
+RUN pip3 install -r ha-requirements.txt
+WORKDIR /
 
 # Install Home Assistant
 RUN pip3 install homeassistant==$HA_VERSION
