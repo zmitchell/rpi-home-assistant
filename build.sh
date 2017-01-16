@@ -82,7 +82,7 @@ VOLUME /config
 # WORKDIR /
 # RUN rm -rf home-assistant
 WORKDIR /config
-RUN pip3 install -r ha-requirements.txt
+RUN pip3 install -r requirements.txt
 WORKDIR /
 
 # Install Home Assistant
