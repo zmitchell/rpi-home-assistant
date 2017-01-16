@@ -78,8 +78,8 @@ VOLUME /config
 RUN pip3 install homeassistant==$HA_VERSION
 
 # Start Home Assistant
-# CMD [ "python3", "-m", "homeassistant", "--config", "/config" ]
-CMD ["sh"]
+CMD [ "python3", "-m", "homeassistant", "--config", "/config" ]
+# CMD ["sh"]
 _EOF_
 
 ## #####################################################################
