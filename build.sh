@@ -74,12 +74,12 @@ RUN PYTHON_EXEC=/usr/bin/python3 make install
 # Mouting point for the user's configuration
 VOLUME /config
 
-# Install Home Assistant
-RUN pip3 install homeassistant==$HA_VERSION
-
 # Start Home Assistant
 CMD [ "python3", "-m", "homeassistant", "--config", "/config" ]
 # CMD ["sh"]
+
+# Install Home Assistant
+RUN pip3 install homeassistant==$HA_VERSION
 _EOF_
 
 ## #####################################################################
