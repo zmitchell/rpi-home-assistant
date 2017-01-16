@@ -12,16 +12,17 @@ log ">>--------------------->>"
 ## #####################################################################
 ## Home Assistant version
 ## #####################################################################
-if [ "$1" != "" ]; then
-   # Provided as an argument
-   HA_VERSION=$1
-   log "Docker image with Home Assistant $HA_VERSION"
-else
-   _HA_VERSION="$(cat /home/pi/rpi-home-assistant/log/docker-build.version)"
-   HA_VERSION="$(curl 'https://pypi.python.org/pypi/homeassistant/json' | jq '.info.version' | tr -d '"')"
-   HA_LATEST=true
-   log "Docker image with Home Assistant 'latest' (version $HA_VERSION)" 
-fi
+# if [ "$1" != "" ]; then
+#    # Provided as an argument
+#    HA_VERSION=$1
+#    log "Docker image with Home Assistant $HA_VERSION"
+# else
+#    _HA_VERSION="$(cat /home/pi/rpi-home-assistant/log/docker-build.version)"
+#    HA_VERSION="$(curl 'https://pypi.python.org/pypi/homeassistant/json' | jq '.info.version' | tr -d '"')"
+#    HA_LATEST=true
+#    log "Docker image with Home Assistant 'latest' (version $HA_VERSION)" 
+# fi
+HA_VERSION = 0.35.3
 
 ## #####################################################################
 ## For hourly (not parameterized) builds (crontab)
@@ -101,12 +102,12 @@ docker build -t zmitchell/rpi-home-assistant:$HA_VERSION .
 #log "Pushing zmitchell/rpi-home-assistant:$HA_VERSION"
 #docker push zmitchell/rpi-home-assistant:$HA_VERSION
 
-if [ "$HA_LATEST" = true ]; then
-   log "Tagging zmitchell/rpi-home-assistant:$HA_VERSION with latest"
-   docker tag zmitchell/rpi-home-assistant:$HA_VERSION zmitchell/rpi-home-assistant:latest
-   #log "Pushing zmitchell/rpi-home-assistant:latest"
-   #docker push zmitchell/rpi-home-assistant:latest
-   echo $HA_VERSION > /home/pi/rpi-home-assistant/log/docker-build.version
-fi
+# if [ "$HA_LATEST" = true ]; then
+#    log "Tagging zmitchell/rpi-home-assistant:$HA_VERSION with latest"
+#    docker tag zmitchell/rpi-home-assistant:$HA_VERSION zmitchell/rpi-home-assistant:latest
+#    #log "Pushing zmitchell/rpi-home-assistant:latest"
+#    #docker push zmitchell/rpi-home-assistant:latest
+#    echo $HA_VERSION > /home/pi/rpi-home-assistant/log/docker-build.version
+# fi
 
 log ">>--------------------->>"
