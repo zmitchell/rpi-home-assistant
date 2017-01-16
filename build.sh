@@ -81,7 +81,7 @@ VOLUME /config
 # RUN pip3 install -r requirements_all.txt
 # WORKDIR /
 # RUN rm -rf home-assistant
-RUN pip3 install astral=1.3.3 netdisco=0.8.1 phue=0.9 python-forecastio=1.3.5
+RUN pip3 install astral==1.3.3 netdisco==0.8.1 phue==0.9 python-forecastio==1.3.5
 
 # Install Home Assistant
 RUN pip3 install homeassistant==$HA_VERSION
