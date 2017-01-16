@@ -76,11 +76,12 @@ WORKDIR /
 VOLUME /config
 
 # Install Home Assistant dependencies
-RUN git clone https://github.com/home-assistant/home-assistant.git
-WORKDIR home-assistant
-RUN pip3 install -r requirements_all.txt
-WORKDIR /
-RUN rm -rf home-assistant
+# RUN git clone https://github.com/home-assistant/home-assistant.git
+# WORKDIR home-assistant
+# RUN pip3 install -r requirements_all.txt
+# WORKDIR /
+# RUN rm -rf home-assistant
+RUN pip3 install -r ha-requirements.txt
 
 # Install Home Assistant
 RUN pip3 install homeassistant==$HA_VERSION
