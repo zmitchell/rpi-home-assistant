@@ -64,6 +64,7 @@ RUN git checkout python3
 RUN PYTHON_EXEC=/usr/bin/python3 make build
 USER root
 RUN PYTHON_EXEC=/usr/bin/python3 make install
+WORKDIR /
 # $ git clone https://github.com/OpenZWave/python-openzwave.git
 # $ cd python-openzwave
 # $ git checkout python3
@@ -73,6 +74,13 @@ RUN PYTHON_EXEC=/usr/bin/python3 make install
 
 # Mouting point for the user's configuration
 VOLUME /config
+
+# Install Home Assistant dependencies
+RUN git clone https://github.com/home-assistant/home-assistant.git
+WORKDIR home-assistant
+RUN pip3 install -r requirements_all.txt
+WORKDIR /
+RUN rm -rf home-assistant
 
 # Install Home Assistant
 RUN pip3 install homeassistant==$HA_VERSION
