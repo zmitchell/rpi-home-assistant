@@ -22,7 +22,7 @@ log ">>--------------------->>"
 #    HA_LATEST=true
 #    log "Docker image with Home Assistant 'latest' (version $HA_VERSION)" 
 # fi
-HA_VERSION = 0.35.3
+HA_VERSION=0.35.3
 
 ## #####################################################################
 ## For hourly (not parameterized) builds (crontab)
