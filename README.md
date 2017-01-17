@@ -33,7 +33,7 @@ The `build.sh` script allows you to automate building the Docker image, tagging 
 
 This script generates a Dockerfile for the image and uses it to build the image. If you want to make changes to the Dockerfile, do it in `build.sh`, otherwise your changes will be overwritten the next time the image is built.
 
-## Generated Dockerfile
+## Making the Dockerfile
 There is a section in `build.sh` that looks like this:
 
     cat << _EOF_ > Dockerfile
@@ -48,10 +48,7 @@ This is called a "heredoc." The way this works in general is that if you have th
 
 you're telling the shell to take everything between `cat << someString > /path/to/aFile` and the first occurrence of `someString` and stick it into the file at the location `/path/to/aFile`. This is how we generate the Dockerfile. 
 
-Having the template for the Dockerfile embedded in `build.sh` isn't pretty or ideal, but it gets the job done. It also allows us build a specific version of Home Assistant by passing it as an argument to `build.sh`, or to build the latest version by default.
+Having the template for the Dockerfile embedded in `build.sh` isn't pretty or ideal, but it gets the job done. It also allows us to build a specific version of Home Assistant by passing it as an argument to `build.sh`, or to build the latest version by default.
 
 ## `run.sh`
-There are several options that need to be passed to the `docker run` command in order for Home Assistant to work properly. For instance, the `--net=host` command lets the container communicate over your network. 
-
-## `configuration.yaml`
-Don't forget to include the `zwave` component to your `configuration.yaml`
+There are several options that need to be passed to the `docker run` command in order for Home Assistant to work properly. This script is just an easy way to call `docker run` with all of the necessary options without having to type them out every single time.
