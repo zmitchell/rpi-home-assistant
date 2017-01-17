@@ -19,14 +19,21 @@ One solution to this problem would be to download the `requirements_all.txt` fil
     - You can find out which device your USB stick is by running `ls /dev/ttyACM*`, removing your USB stick, and running `ls /dev/ttyACM*` again. The device that is disappears the second time you run the command is your USB stick.
 - `HA_VERSION`: This is the version of Home Assistant that you want to run.
     - You can choose a specific version (i.e. 0.35.3) or "latest" (without the quotes)
-- 
 
-# `build.sh`
+## `configuration.yaml`
+You'll need to add the `zwave` component to your `configuration.yaml` with `/dev/zwave` as the `usb_path`:
+
+    zwave:
+        usb_path: /dev/zwave
+
+# Documentation
+
+## `build.sh`
 The `build.sh` script allows you to automate building the Docker image, tagging it, and pushing it to the Docker Hub. If you don't want to push your image to the Docker Hub, you can just comment out the section of `build.sh` that does this. 
 
 This script generates a Dockerfile for the image and uses it to build the image. If you want to make changes to the Dockerfile, do it in `build.sh`, otherwise your changes will be overwritten the next time the image is built.
 
-# Generated Dockerfile
+## Generated Dockerfile
 There is a section in `build.sh` that looks like this:
 
     cat << _EOF_ > Dockerfile
@@ -39,7 +46,12 @@ This is called a "heredoc." The way this works in general is that if you have th
     some text possibly spanning several lines
     someString
 
-you're telling the shell to take everything between `cat << someString > /path/to/aFile` and the first occurrence of `someString` and stick it into the file at the location `/path/to/aFile`. This is how we generate the Dockerfile. It might seem overly complicated, but it allows us build a specific version of Home Assistant by passing it as an argument to `build.sh`, or to build the latest version by default.
+you're telling the shell to take everything between `cat << someString > /path/to/aFile` and the first occurrence of `someString` and stick it into the file at the location `/path/to/aFile`. This is how we generate the Dockerfile. 
 
-# `run.sh`
+Having the template for the Dockerfile embedded in `build.sh` isn't pretty or ideal, but it gets the job done. It also allows us build a specific version of Home Assistant by passing it as an argument to `build.sh`, or to build the latest version by default.
+
+## `run.sh`
 There are several options that need to be passed to the `docker run` command in order for Home Assistant to work properly. For instance, the `--net=host` command lets the container communicate over your network. 
+
+## `configuration.yaml`
+Don't forget to include the `zwave` component to your `configuration.yaml`
