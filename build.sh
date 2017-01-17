@@ -9,9 +9,7 @@ log() {
 
 log "---------------------"
 
-## #####################################################################
-## Home Assistant version
-## #####################################################################
+# Home Assistant version
 # if [ "$1" != "" ]; then
 #    # Provided as an argument
 #    HA_VERSION=$1
@@ -24,19 +22,17 @@ log "---------------------"
 # fi
 HA_VERSION=0.35.3
 
-## #####################################################################
-## For hourly (not parameterized) builds (crontab)
-## Do nothing: we're trying to build & push the same version again
-## #####################################################################
+
+# Skip the build if the version has been built already
 # if [ "$HA_LATEST" = true ] && [ "$HA_VERSION" = "$_HA_VERSION" ]; then
 #    log "Docker image with Home Assistant $HA_VERSION has already been built & pushed"
 #    log ">>--------------------->>"
 #    exit 0
 # fi
 
-## #####################################################################
-## Generate the Dockerfile
-## #####################################################################
+########################################################################
+## Dockerfile Start
+########################################################################
 cat << _EOF_ > Dockerfile
 FROM resin/rpi-raspbian
 MAINTAINER Zach Mitchell <zmitchell@fastmail.com>
@@ -66,43 +62,40 @@ RUN PYTHON_EXEC=/usr/bin/python3 make build
 USER root
 RUN PYTHON_EXEC=/usr/bin/python3 make install
 WORKDIR /
-# $ git clone https://github.com/OpenZWave/python-openzwave.git
-# $ cd python-openzwave
-# $ git checkout python3
-# $ PYTHON_EXEC=$(which python3) make build
-# $ sudo PYTHON_EXEC=$(which python3) make install
-
 
 # Mouting point for the user's configuration
 VOLUME /config
 
 # Install Home Assistant dependencies
-RUN pip3 install astral==1.3.3 netdisco==0.8.1 phue==0.9 python-forecastio==1.3.5
+RUN pip3 install astral==1.3.3 netdisco==0.8.1 \
+    phue==0.9 python-forecastio==1.3.5
 
 # Install Home Assistant
 RUN pip3 install homeassistant==$HA_VERSION
 
 # Start Home Assistant
 CMD [ "python3", "-m", "homeassistant", "--config", "/config" ]
-# CMD ["sh"]
-
 _EOF_
+########################################################################
+## Dockerfile End
+########################################################################
 
-## #####################################################################
-## Build the Docker image, tag and push to https://hub.docker.com/
-## #####################################################################
+
+# Build and tag the image
 log "Building zmitchell/rpi-home-assistant:$HA_VERSION"
 docker build -t zmitchell/rpi-home-assistant:$HA_VERSION .
+if [ "$HA_LATEST" = true ]; then
+   log "Tagging zmitchell/rpi-home-assistant:$HA_VERSION with latest"
+   docker tag zmitchell/rpi-home-assistant:$HA_VERSION zmitchell/rpi-home-assistant:latest
+   echo $HA_VERSION > /home/pi/rpi-home-assistant/log/docker-build.version
+fi
 
+# Push the image to Docker Hub
 #log "Pushing zmitchell/rpi-home-assistant:$HA_VERSION"
 #docker push zmitchell/rpi-home-assistant:$HA_VERSION
-
 # if [ "$HA_LATEST" = true ]; then
-#    log "Tagging zmitchell/rpi-home-assistant:$HA_VERSION with latest"
-#    docker tag zmitchell/rpi-home-assistant:$HA_VERSION zmitchell/rpi-home-assistant:latest
-#    #log "Pushing zmitchell/rpi-home-assistant:latest"
-#    #docker push zmitchell/rpi-home-assistant:latest
-#    echo $HA_VERSION > /home/pi/rpi-home-assistant/log/docker-build.version
+#    log "Pushing zmitchell/rpi-home-assistant:latest"
+#    docker push zmitchell/rpi-home-assistant:latest
 # fi
 
-log ">>--------------------->>"
+log "---------------------"
