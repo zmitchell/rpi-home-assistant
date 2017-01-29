@@ -47,7 +47,7 @@ This is called a "heredoc." The way this works in general is that if you have th
     several lines
     someString
 
-you're telling the shell to take everything between the first line, `cat << someString > /path/to/aFile`, and the first occurrence of `someString` and stick that stuff into a file at the location `/path/to/aFile`. This is how we generate the Dockerfile. 
+you're telling the shell to take everything between the first line, `cat << someString > /path/to/aFile`, and the first occurrence of `someString` and then to stick that stuff into a file at the location `/path/to/aFile`. This is how we generate the Dockerfile. 
 
 Having the template for the Dockerfile embedded in `build.sh` isn't pretty or ideal, but it gets the job done. This method allows us to dynamically generate a Dockerfile so that we can automate the build process for new versions of Home Assistant.
 
