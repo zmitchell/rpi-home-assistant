@@ -2,14 +2,15 @@
 
 CONFIG=/home/pi/homeassistant-config
 ZW_STICK=/dev/ttyACM0
-HA_VERSION=0.35.3 # alternatively, use "latest"
-IMAGE=zmitchell/rpi-home-assistant:$HA_VERSION
 
-docker run -d --name hass \
+# Use the first line instead to show HA log output and remove the
+# container once it exits.
+
+docker run -it --rm --name hass-temp \
     --net=host \
     -v /etc/localtime:/etc/localtime:ro \
     -v $CONFIG:/srv/hass/config \
     -v /etc/letsencrypt:/etc/letsencrypt \
     -v /var/lib/letsencrypt:/var/lib/letsencrypt \
     --device $ZW_STICK:/dev/zwave \
-    $IMAGE
+    $1 /bin/bash

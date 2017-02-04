@@ -95,6 +95,15 @@ RUN PYTHON_EXEC=/srv/hass/hass-venv/bin/python3 make build
 USER root
 RUN PYTHON_EXEC=/srv/hass/hass-venv/bin/python3 make install
 
+# Setting the permissions for the Let's Encrypt directories
+RUN mkdir /etc/letsencrypt /var/lib/letsencrypt
+RUN chown -R hass:hass /etc/letsencrypt && \
+    chown -R hass:hass /var/lib/letsencrypt
+RUN chmod -R 664 /etc/letsencrypt && \
+    chmod -R 664 /var/lib/letsencrypt
+VOLUME /etc/letsencrypt
+VOLUME /var/lib/letsencrypt
+
 # Mouting point for the user's configuration
 VOLUME /srv/hass/config
 

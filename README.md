@@ -4,6 +4,14 @@ The scripts in this repo will let you build and run a Docker image to run Home A
 # User Specific Changes
 This is a list of things that YOU will need to change to make this work for you. These settings tell the scripts where to find your configuration files, etc.
 
+## Let's Encrypt Directories - Required
+This Docker container will mount the locations of the Let's Encrypt certificates as described in the Home Assistant documentation:
+
+- `/etc/letsencrypt`
+- `/var/lib/letsencrypt`
+
+If you don't have (or want) Let's Encrypt functionality, you'll need to make these two directories anyway because the build process assumes that they're there. You don't need to use Let's Encrypt with this Docker image, but these directories do need to be on the host computer (your Raspberry Pi).
+
 ## `build.sh`
 The only thing you would want to change here would be the Docker repository to push your image to once it's built. You can't push to my repository :)
 

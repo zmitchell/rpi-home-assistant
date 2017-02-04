@@ -47,11 +47,16 @@ RUN virtualenv hass-venv &&     . /srv/hass/hass-venv/bin/activate &&     pip3 i
 RUN git clone https://github.com/OpenZWave/python-openzwave.git &&     chown -R hass python-openzwave
 WORKDIR python-openzwave
 RUN git checkout python3
-#RUN PYTHON_EXEC=/usr/bin/python3 make build
 RUN PYTHON_EXEC=/srv/hass/hass-venv/bin/python3 make build
 USER root
-#RUN PYTHON_EXEC=/usr/bin/python3 make install
 RUN PYTHON_EXEC=/srv/hass/hass-venv/bin/python3 make install
+
+# Setting the permissions for the Let's Encrypt directories
+RUN mkdir /etc/letsencrypt /var/lib/letsencrypt
+RUN chown -R hass:hass /etc/letsencrypt &&     chown -R hass:hass /var/lib/letsencrypt
+RUN chmod -R 664 /etc/letsencrypt &&     chmod -R 664 /var/lib/letsencrypt
+VOLUME /etc/letsencrypt
+VOLUME /var/lib/letsencrypt
 
 # Mouting point for the user's configuration
 VOLUME /srv/hass/config
