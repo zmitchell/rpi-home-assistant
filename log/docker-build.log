@@ -329,3 +329,30 @@
 20170203-212435 - ---------------------
 20170203-212435 - Building zmitchell/rpi-home-assistant:0.35.3
 20170203-225915 - ---------------------
+20170221-190507 - ---------------------
+20170221-190508 - Docker image with Home Assistant 'latest' (version 0.38.4)
+20170221-190508 - Building zmitchell/rpi-home-assistant:0.38.4
+20170221-195940 - Tagging zmitchell/rpi-home-assistant:0.38.4 with latest
+20170221-195940 - Pushing zmitchell/rpi-home-assistant:0.38.4
+20170221-195942 - Pushing zmitchell/rpi-home-assistant:latest
+20170221-195943 - ---------------------
+20170222-161024 - ---------------------
+20170222-161025 - Docker image with Home Assistant 'latest' (version 0.38.4)
+20170222-161025 - Building zmitchell/rpi-home-assistant:0.38.4
+20170222-161303 - Tagging zmitchell/rpi-home-assistant:0.38.4 with latest
+20170222-161304 - Pushing zmitchell/rpi-home-assistant:0.38.4
+20170222-161306 - Pushing zmitchell/rpi-home-assistant:latest
+20170222-161308 - ---------------------
+20170223-155941 - ---------------------
+20170223-155941 - Docker image with Home Assistant 'latest' (version 0.38.4)
+20170223-155941 - Building zmitchell/rpi-home-assistant:0.38.4
+20170224-035242 - ---------------------
+20170224-035243 - Docker image with Home Assistant 'latest' (version 0.38.4)
+20170224-035243 - Building zmitchell/rpi-home-assistant:0.38.4
+20170224-035405 - ---------------------
+20170224-035406 - Docker image with Home Assistant 'latest' (version 0.38.4)
+20170224-035406 - Building zmitchell/rpi-home-assistant:0.38.4
+20170224-060505 - Tagging zmitchell/rpi-home-assistant:0.38.4 with latest
+20170224-060506 - Pushing zmitchell/rpi-home-assistant:0.38.4
+20170224-061306 - Pushing zmitchell/rpi-home-assistant:latest
+20170224-061319 - ---------------------

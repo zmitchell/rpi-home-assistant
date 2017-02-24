@@ -6,7 +6,7 @@ ENV ARCH=arm
 ENV CROSS_COMPILE=/usr/bin/
 
 # Install dependencies
-RUN apt-get update && apt-get upgrade -y &&     apt-get install --no-install-recommends build-essential net-tools     nmap python3-dev python3-pip ssh libffi-dev libssl-dev libjpeg9-dev     zlib1g-dev libtiff4 liblcms1-dev liblcms2-dev libwebp-dev libopenjpeg-dev     cython3 libudev-dev python3-sphinx python3-setuptools python3-venv git
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh &&     apt-get update && apt-get upgrade -y &&     apt-get install --no-install-recommends build-essential net-tools     nmap python3-dev python3-pip ssh libffi-dev libssl-dev libjpeg9-dev     zlib1g-dev libtiff4 liblcms1-dev liblcms2-dev libwebp-dev libopenjpeg-dev     cython3 libudev-dev python3-sphinx python3-setuptools python3-venv git     libxml2-dev libxslt1-dev
 RUN pip3 install virtualenv
 RUN pip3 install --upgrade pip
 
@@ -30,7 +30,7 @@ USER hass
 WORKDIR /srv/hass
 RUN git clone https://github.com/home-assistant/home-assistant.git
 WORKDIR /srv/hass/home-assistant
-RUN git checkout tags/0.35.3
+RUN git checkout tags/0.38.4
 RUN cp requirements_all.txt ..
 
 # Patch the requirements file
@@ -63,7 +63,7 @@ VOLUME /srv/hass/config
 
 # Install Home Assistant
 USER hass
-RUN . /srv/hass/hass-venv/bin/activate &&     pip3 install homeassistant==0.35.3
+RUN . /srv/hass/hass-venv/bin/activate &&     pip3 install homeassistant==0.38.4
 
 # Start Home Assistant
 CMD [ "/bin/bash", "/srv/hass/scripts/run-hass.sh"]

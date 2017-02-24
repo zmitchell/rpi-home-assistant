@@ -2,7 +2,7 @@
 
 CONFIG=/home/pi/homeassistant-config
 ZW_STICK=/dev/ttyACM0
-HA_VERSION=0.35.3 # alternatively, use "latest"
+HA_VERSION=latest 
 IMAGE=zmitchell/rpi-home-assistant:$HA_VERSION
 
 docker run -d --name hass \
