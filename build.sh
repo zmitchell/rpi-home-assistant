@@ -10,6 +10,12 @@ build_latest_version=false
 if [ ! -d "$log_dir" ]; then
   mkdir "$log_dir"
 fi
+if [ ! -f "$build_log" ]; then
+  touch "$build_log"
+fi
+if [ ! -f "$previous_version_log" ]; then
+  echo 0.0.0 > "$previous_version_log"
+fi
 
 log() {
    now=$(date +"%Y%m%d-%H%M%S")
@@ -131,19 +137,19 @@ _EOF_
 
 # Build and tag the image
 log "Building zmitchell/rpi-home-assistant:$version_to_build"
-docker build -t zmitchell/rpi-home-assistant:$version_to_build .
+#docker build -t zmitchell/rpi-home-assistant:$version_to_build .
 if [ "$build_latest_version" = true ]; then
    log "Tagging zmitchell/rpi-home-assistant:$version_to_build with 'latest'"
-   docker tag zmitchell/rpi-home-assistant:$version_to_build zmitchell/rpi-home-assistant:latest
+#   docker tag zmitchell/rpi-home-assistant:$version_to_build zmitchell/rpi-home-assistant:latest
    echo $version_to_build > $previous_version_log
 fi
 
 # Push the image to Docker Hub
 log "Pushing zmitchell/rpi-home-assistant:$version_to_build"
-docker push zmitchell/rpi-home-assistant:$version_to_build
+#docker push zmitchell/rpi-home-assistant:$version_to_build
 if [ "$build_latest_version" = true ]; then
    log "Pushing zmitchell/rpi-home-assistant:latest"
-   docker push zmitchell/rpi-home-assistant:latest
+#   docker push zmitchell/rpi-home-assistant:latest
 fi
 
 log "--------------------->>"
