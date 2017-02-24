@@ -1,32 +1,39 @@
 #!/bin/bash
 
-HA_LATEST=true
+build_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+log_dir="$build_dir"/log
+build_log="$log_dir"/docker-build.log
+previous_version_log="$log_dir"/previous-build.version
+
+build_latest_version=false
+
+if [ ! -d "$log_dir" ]; then
+  mkdir "$log_dir"
+fi
 
 log() {
    now=$(date +"%Y%m%d-%H%M%S")
-   echo "$now - $*" >> /home/pi/rpi-home-assistant/log/docker-build.log
+   echo "$now - $*" >> "$build_log"
 }
 
-log "---------------------"
+log "<<---------------------"
 
-# Home Assistant version
+# Determine the Home Assistant version to build
 if [ "$1" != "" ]; then
    # Provided as an argument
-   HA_VERSION=$1
-   log "Docker image with Home Assistant $HA_VERSION"
+   version_to_build=$1
+   log "Building Docker image with Home Assistant $version_to_build"
 else
-   _HA_VERSION="$(cat /home/pi/rpi-home-assistant/log/docker-build.version)"
-   HA_VERSION="$(curl 'https://pypi.python.org/pypi/homeassistant/json' | jq '.info.version' | tr -d '"')"
-   HA_LATEST=true
-   log "Docker image with Home Assistant 'latest' (version $HA_VERSION)" 
+   previous_version="$(cat "$previous_version_log")"
+   version_to_build="$(curl 'https://pypi.python.org/pypi/homeassistant/json' | jq '.info.version' | tr -d '"')"
+   build_latest_version=true
+   log "Building Docker image with Home Assistant 'latest' (version $version_to_build)" 
 fi
-#HA_VERSION=0.35.3
-
 
 # Skip the build if the version has been built already
-if [ "$HA_LATEST" = true ] && [ "$HA_VERSION" = "$_HA_VERSION" ]; then
-   log "Docker image with Home Assistant $HA_VERSION has already been built & pushed"
-   log ">>--------------------->>"
+if [ "$build_latest_version" = true ] && [ "$version_to_build" = "$previous_version" ]; then
+   log "Docker image with Home Assistant $version_to_build has already been built & pushed"
+   log "--------------------->>"
    exit 0
 fi
 
@@ -72,7 +79,7 @@ USER hass
 WORKDIR /srv/hass
 RUN git clone https://github.com/home-assistant/home-assistant.git
 WORKDIR /srv/hass/home-assistant
-RUN git checkout tags/$HA_VERSION
+RUN git checkout tags/$version_to_build
 RUN cp requirements_all.txt ..
 
 # Patch the requirements file
@@ -112,7 +119,7 @@ VOLUME /srv/hass/config
 # Install Home Assistant
 USER hass
 RUN . /srv/hass/hass-venv/bin/activate && \
-    pip3 install homeassistant==$HA_VERSION
+    pip3 install homeassistant==$version_to_build
 
 # Start Home Assistant
 CMD [ "/bin/bash", "/srv/hass/scripts/run-hass.sh"]
@@ -123,20 +130,20 @@ _EOF_
 
 
 # Build and tag the image
-log "Building zmitchell/rpi-home-assistant:$HA_VERSION"
-docker build -t zmitchell/rpi-home-assistant:$HA_VERSION .
-if [ "$HA_LATEST" = true ]; then
-   log "Tagging zmitchell/rpi-home-assistant:$HA_VERSION with latest"
-   docker tag zmitchell/rpi-home-assistant:$HA_VERSION zmitchell/rpi-home-assistant:latest
-   echo $HA_VERSION > /home/pi/rpi-home-assistant/log/docker-build.version
+log "Building zmitchell/rpi-home-assistant:$version_to_build"
+docker build -t zmitchell/rpi-home-assistant:$version_to_build .
+if [ "$build_latest_version" = true ]; then
+   log "Tagging zmitchell/rpi-home-assistant:$version_to_build with 'latest'"
+   docker tag zmitchell/rpi-home-assistant:$version_to_build zmitchell/rpi-home-assistant:latest
+   echo $version_to_build > $previous_version_log
 fi
 
 # Push the image to Docker Hub
-log "Pushing zmitchell/rpi-home-assistant:$HA_VERSION"
-docker push zmitchell/rpi-home-assistant:$HA_VERSION
-if [ "$HA_LATEST" = true ]; then
+log "Pushing zmitchell/rpi-home-assistant:$version_to_build"
+docker push zmitchell/rpi-home-assistant:$version_to_build
+if [ "$build_latest_version" = true ]; then
    log "Pushing zmitchell/rpi-home-assistant:latest"
    docker push zmitchell/rpi-home-assistant:latest
 fi
 
-log "---------------------"
+log "--------------------->>"
